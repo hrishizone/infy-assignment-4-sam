@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://pnj5n3mp71.execute-api.ap-south-1.amazonaws.com/prod";
+const API_BASE_URL = "https://jgn7wje6q2.execute-api.ap-south-1.amazonaws.com/prod";
 
 const $ = (id) => document.getElementById(id);
 const outStatus = $("status");
