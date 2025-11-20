@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.log
+
+# Virtual env
+.venv/
+venv/
+
+# OS / editor stuff
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# AWS SAM / build artifacts
+.aws-sam/
+dist/
+*.zip
+
+# Lambda layer build artifacts
+layer/mysql-layer/python/
+
+# Local env / secrets
+.env
+*.env
