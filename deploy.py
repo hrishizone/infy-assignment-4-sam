@@ -48,8 +48,9 @@ def ensure_bucket(bucket):
 
 
 def build_layer():
-    logger.info("Build Lambda layer via build.sh")
-    run("bash layer/mysql-layer/scripts/package_layer.sh")
+    script = ROOT / "layer" / "mysql-layer" / "scripts" / "package_layer.sh"
+    logger.info("Build Lambda layer via %s", script)
+    run(f"bash {script}")
 
 def upload_layer():
     logger.info("Upload layer")
