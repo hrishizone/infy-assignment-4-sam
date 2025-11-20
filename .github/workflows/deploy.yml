@@ -8,6 +8,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -30,7 +35,24 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push UI image to ECR
+        run: |
+          IMAGE_TAG=latest
+          ECR_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}
+
+          echo "Building image ${ECR_URI}:${IMAGE_TAG}"
+          docker build -t ${ECR_URI}:${IMAGE_TAG} .
+
+          echo "Pushing image ${ECR_URI}:${IMAGE_TAG}"
+          docker push ${ECR_URI}:${IMAGE_TAG}
+
+          echo "Image pushed: ${ECR_URI}:${IMAGE_TAG}"
 
       - name: Run deployment
         run: |
