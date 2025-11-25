@@ -17,7 +17,7 @@ DB_NAME = os.environ["DB_NAME"]
 ALLOWED_ORIGIN = os.environ.get("ALLOWED_ORIGIN", "*")
 ALLOWED_HEADERS = os.environ.get("ALLOWED_HEADERS", "Authorization,customer_id")
 
-sm = boto3.client("secretsmanager")
+secretsmanager = boto3.client("secretsmanager")
 
 _conn = None 
 
@@ -34,7 +34,7 @@ def _cors_headers(extra: Dict[str, str] | None = None) -> Dict[str, str]:
 
 
 def _get_db_credentials() -> Dict[str, str]:
-    resp = sm.get_secret_value(SecretId=SECRET_ARN)
+    resp = secretsmanager.get_secret_value(SecretId=SECRET_ARN)
     secret_str = resp.get("SecretString") or "{}"
     creds = json.loads(secret_str)
     return {"username": creds["username"], "password": creds["password"]}
